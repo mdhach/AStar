@@ -40,12 +40,12 @@ public class AStar {
         int j = rand.nextInt(15);
         int count = 0;
         while(count < 24) {
-            if(board[i][i].getType() == 0) {
+            if(board[i][j].getType() == 0) {
                 board[i][j].setType(1);
-                i = rand.nextInt(15);
-                j = rand.nextInt(15);
                 count++;
             }
+            i = rand.nextInt(15);
+            j = rand.nextInt(15);
         }
     }
     
@@ -82,8 +82,11 @@ public class AStar {
     public static void main(String[] args) {
     	// TEST
         AStar game = new AStar();
+        System.out.println("Create AStar object");
         game.generateBoard();
+        System.out.println("generate board");
         game.generateBlock();
+        System.out.println("generate block");
         game.printState();
     }
     
