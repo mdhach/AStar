@@ -1,9 +1,10 @@
 import java.util.Scanner;
 
+/**
+ * Driver class to test the AStar class
+ */
 public class Driver {
-    /**
-     * Main driver to execute the AStar class
-     */
+    
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         int startRow, startCol, goalRow, goalCol;

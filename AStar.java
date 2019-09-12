@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class AStar {
     private Node[][] board;
-    private PriorityQueue<Node> neighbors;
+    private PriorityQueue<Node> openList;
     private Node start;
     private Node goal;
     
@@ -21,7 +21,7 @@ public class AStar {
         start = new Node(sR, sC, 1);
         goal = new Node(gR, gC, 1);
         board = new Node[15][15];
-        neighbors = new PriorityQueue<Node>();
+        openList = new PriorityQueue<Node>();
     }
     
     /**
@@ -86,4 +86,40 @@ public class AStar {
         return board[i][j];
     }
     
+    public void search(Node in) {
+        openList.add(in);
+        
+    }
+    
+    /**
+     * Search for traversable nodes on parent row
+     * 
+     * @param Node the node that is being searched
+     */
+    public void searchRow(Node in) {
+        if(board[in.getRow()-1][in.getCol()].getType() != 1) {
+            board[in.getRow()-1][in.getCol()].setParent(in);
+            openList.add(board[in.getRow()-1][in.getCol()]);
+        }
+        if(board[in.getRow()+1][in.getCol()].getType() != 1) {
+            board[in.getRow()+1][in.getCol()].setParent(in);
+            openList.add(board[in.getRow()+1][in.getCol()]);
+        }
+    }
+    
+    /**
+     * Search for traversable nodes on parent column
+     * 
+     * @param Node the node that is being searched
+     */
+    public void searchCol(Node in) {
+        if(board[in.getRow()][in.getCol()-1].getType() != 1) {
+            board[in.getRow()][in.getCol()-1].setParent(in);
+            openList.add(board[in.getRow()][in.getCol()-1]);
+        }
+        if(board[in.getRow()][in.getCol()+1].getType() != 1) {
+            board[in.getRow()][in.getCol()+1].setParent(in);
+            openList.add(board[in.getRow()][in.getCol()+1]);
+        }
+    }
 }
