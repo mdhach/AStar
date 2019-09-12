@@ -86,25 +86,4 @@ public class AStar {
         return board[i][j];
     }
     
-    /**
-     * User defined starting node
-     */
-    public void setStart(int i, int j) {
-        if((board[i][j].getType()) != 1) {
-            start = new Node(i, j, 1);
-        } else {
-            System.out.println("ERROR! This is not a valid starting Node!");
-        }
-    }
-    
-    /**
-     * User defined goal node
-     */
-    public void setGoal(int i, int j) {
-        if((board[i][j].getType()) != 1) {
-            goal = new Node(i, j, 1);
-        } else {
-            System.out.println("ERROR! This is not a valid goal Node!");
-        }
-    }
 }
