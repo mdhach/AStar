@@ -75,19 +75,4 @@ public class AStar {
     public Node getNode(int i, int j) {
         return board[i][j];
     }
-    
-    /**
-     * Main driver to execute the AStar class
-     */
-    public static void main(String[] args) {
-    	// TEST
-        AStar game = new AStar();
-        System.out.println("Create AStar object");
-        game.generateBoard();
-        System.out.println("generate board");
-        game.generateBlock();
-        System.out.println("generate block");
-        game.printState();
-    }
-    
 }
