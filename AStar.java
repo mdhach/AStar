@@ -11,11 +11,15 @@ import java.util.*;
 public class AStar {
     private Node[][] board;
     private PriorityQueue<Node> neighbors;
+    private Node start;
+    private Node goal;
     
     /**
      * Init constructor for Node board and neighbor queue
      */
-    public AStar() {
+    public AStar(int sR, int sC, int gR, int gC) {
+        start = new Node(sR, sC, 1);
+        goal = new Node(gR, gC, 1);
         board = new Node[15][15];
         neighbors = new PriorityQueue<Node>();
     }
@@ -29,6 +33,8 @@ public class AStar {
                 board[i][j] = new Node(i, j, 0);
             }
         }
+        board[start.getRow()][start.getCol()] = start;
+        board[goal.getRow()][goal.getCol()] = goal;
     }
     
     /**
@@ -57,8 +63,12 @@ public class AStar {
             for(int j = 0; j < 15; j++) {
                 if(this.getNode(i, j).getType() == 0) {
                     System.out.print("[ ]");
+                } else if ((this.getNode(i, j).getRow() == start.getRow()) && (this.getNode(i, j).getCol() == start.getCol())) {
+                    System.out.print("[S]");
+                } else if ((this.getNode(i, j).getRow() == goal.getRow()) && (this.getNode(i, j).getCol() == goal.getCol())) {
+                    System.out.print("[G]");
                 } else {
-                    System.out.print("[X]");
+                    System.out.print("[#]");
                 }
             }
             System.out.println();
@@ -74,5 +84,27 @@ public class AStar {
      */
     public Node getNode(int i, int j) {
         return board[i][j];
+    }
+    
+    /**
+     * User defined starting node
+     */
+    public void setStart(int i, int j) {
+        if((board[i][j].getType()) != 1) {
+            start = new Node(i, j, 1);
+        } else {
+            System.out.println("ERROR! This is not a valid starting Node!");
+        }
+    }
+    
+    /**
+     * User defined goal node
+     */
+    public void setGoal(int i, int j) {
+        if((board[i][j].getType()) != 1) {
+            goal = new Node(i, j, 1);
+        } else {
+            System.out.println("ERROR! This is not a valid goal Node!");
+        }
     }
 }
