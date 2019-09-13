@@ -80,8 +80,8 @@ public class AStar {
     /**
      * Returns node at index
      * 
-     * @param int row of Node board
-     * @param int col of Node board
+     * @param i row of Node board
+     * @param j col of Node board
      * @return Node at specified index
      */
     public Node getNode(int i, int j) {
@@ -91,7 +91,7 @@ public class AStar {
     /**
      * Searches the row and col of this node
      * 
-     * @param Node the node that is being searched
+     * @param in the node that is being searched
      */
     public void search(Node in) {
         openList.add(in);
@@ -102,7 +102,7 @@ public class AStar {
     /**
      * Search for traversable nodes on parent row
      * 
-     * @param Node the node that is being searched
+     * @param in the node that is being searched
      */
     public void searchRow(Node in) {
         if(board[in.getRow()-1][in.getCol()].getType() != 1) {
@@ -118,7 +118,7 @@ public class AStar {
     /**
      * Search for traversable nodes on parent column
      * 
-     * @param Node the node that is being searched
+     * @param in the node that is being searched
      */
     public void searchCol(Node in) {
         if(board[in.getRow()][in.getCol()-1].getType() != 1) {
