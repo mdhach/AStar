@@ -13,6 +13,8 @@ public class Node {
 		type = t;
 		parent = null;
 		//type 0 is traverseable, 1 is not
+		//type 2 is start node, 3 is goal node
+		//type 4 is path node
 	}
 	
 	//mutator methods to set values

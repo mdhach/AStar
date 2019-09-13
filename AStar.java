@@ -13,15 +13,17 @@ public class AStar {
     private PriorityQueue<Node> openList;
     private Node start;
     private Node goal;
+    private Comparator<Node> comparator;
     
     /**
      * Init constructor for Node board and neighbor queue
      */
     public AStar(int sR, int sC, int gR, int gC) {
-        start = new Node(sR, sC, 1);
-        goal = new Node(gR, gC, 1);
+        comparator = new NodeComparator();
+        start = new Node(sR, sC, 2);
+        goal = new Node(gR, gC, 3);
         board = new Node[15][15];
-        openList = new PriorityQueue<Node>();
+        openList = new PriorityQueue<Node>(11, comparator);
     }
     
     /**
@@ -63,9 +65,9 @@ public class AStar {
             for(int j = 0; j < 15; j++) {
                 if(this.getNode(i, j).getType() == 0) {
                     System.out.print("[ ]");
-                } else if ((this.getNode(i, j).getRow() == start.getRow()) && (this.getNode(i, j).getCol() == start.getCol())) {
+                } else if (this.getNode(i, j).getType() == 2) {
                     System.out.print("[S]");
-                } else if ((this.getNode(i, j).getRow() == goal.getRow()) && (this.getNode(i, j).getCol() == goal.getCol())) {
+                } else if (this.getNode(i, j).getType() == 3) {
                     System.out.print("[G]");
                 } else {
                     System.out.print("[#]");
@@ -86,9 +88,15 @@ public class AStar {
         return board[i][j];
     }
     
+    /**
+     * Searches the row and col of this node
+     * 
+     * @param Node the node that is being searched
+     */
     public void search(Node in) {
         openList.add(in);
-        
+        this.searchCol(in);
+        this.searchRow(in);
     }
     
     /**
