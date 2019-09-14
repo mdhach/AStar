@@ -109,7 +109,7 @@ public class AStar {
         if(temp.getType() != 2 && temp.getType() != 3) {
             temp.setType(5);
         }
-        System.out.println("POPPED: " + temp.toString());
+        //System.out.println("POPPED: " + temp.toString());
         if(!this.checkGoal(temp)) {
             this.searchCol(temp);
             this.searchRow(temp);
@@ -126,7 +126,7 @@ public class AStar {
         Node temp; // point to node for less verbosity
         int g;
         int h;
-        if(in.getRow() < board[0].length && in.getRow() >= 0) {
+        if(in.getRow()-1 < board[0].length && in.getRow()-1 >= 0) {
             temp = board[in.getRow()-1][in.getCol()];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
@@ -146,7 +146,7 @@ public class AStar {
                 openList.add(temp);
             }
         }
-        if(in.getRow() < board[0].length && in.getRow() >= 0) {
+        if(in.getRow()+1 < board[0].length && in.getRow()+1 >= 0) {
             temp = board[in.getRow()+1][in.getCol()];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
@@ -177,7 +177,7 @@ public class AStar {
         Node temp; // point to node for less verbosity
         int g;
         int h;
-        if(in.getCol() < board[1].length && in.getCol() >= 0) {
+        if(in.getCol()-1 < board[1].length && in.getCol()-1 >= 0) {
             temp = board[in.getRow()][in.getCol()-1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
@@ -197,7 +197,7 @@ public class AStar {
                 openList.add(temp);
             }
         }
-        if(in.getCol() < board[1].length && in.getCol() >= 0) {
+        if(in.getCol()+1 < board[1].length && in.getCol()+1 >= 0) {
             temp = board[in.getRow()][in.getCol()+1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
