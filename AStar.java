@@ -113,6 +113,8 @@ public class AStar {
     public void search(Node in) {
         this.searchCol(in);
         this.searchRow(in);
+        Node temp = openList.poll();
+        System.out.println("POPPED: " + temp.toString());
     }
     
     /**
@@ -121,37 +123,44 @@ public class AStar {
      * @param in the node that is being searched
      */
     public void searchRow(Node in) {
+        Node temp; // point to node for less verbosity
         int g;
         int h;
-        if(board[in.getRow()-1][in.getCol()].getType() != 1) {
-            board[in.getRow()-1][in.getCol()].setParent(in);
-            openList.add(board[in.getRow()-1][in.getCol()]);
-            
-            // calculate g if traversable node was found
-            g = this.calculateG(board[in.getRow()-1][in.getCol()]);
-            board[in.getRow()-1][in.getCol()].setG(g);
-            
-            // calculate h if traversable node was found
-            h = this.calculateH(board[in.getRow()-1][in.getCol()]);
-            board[in.getRow()-1][in.getCol()].setH(h);
-            
-            // set f after g and h were calculated
-            board[in.getRow()-1][in.getCol()].setF();
+        temp = board[in.getRow()-1][in.getCol()];
+        if(temp.getRow() < board[0].length && temp.getRow() > 0) {
+            if(temp.getType() != 1) {
+                temp.setParent(in);
+                openList.add(temp);
+                
+                // calculate g if traversable node was found
+                g = this.calculateG(temp);
+                temp.setG(g);
+                
+                // calculate h if traversable node was found
+                h = this.calculateH(temp);
+                temp.setH(h);
+                
+                // set f after g and h were calculated
+                temp.setF();
+            }
         }
-        if(board[in.getRow()+1][in.getCol()].getType() != 1) {
-            board[in.getRow()+1][in.getCol()].setParent(in);
-            openList.add(board[in.getRow()+1][in.getCol()]);
-            
-            // calculate g if traversable node was found
-            g = calculateG(board[in.getRow()+1][in.getCol()]);
-            board[in.getRow()+1][in.getCol()].setG(g);
-            
-            // calculate h if traversable node was found
-            h = calculateH(board[in.getRow()+1][in.getCol()]);
-            board[in.getRow()+1][in.getCol()].setH(h);
-            
-            // set f after g and h were calculated
-            board[in.getRow()+1][in.getCol()].setF();
+        temp = board[in.getRow()+1][in.getCol()];
+        if(temp.getRow() < board[0].length && temp.getRow() > 0) {
+            if(temp.getType() != 1) {
+                temp.setParent(in);
+                openList.add(temp);
+                
+                // calculate g if traversable node was found
+                g = calculateG(temp);
+                temp.setG(g);
+                
+                // calculate h if traversable node was found
+                h = calculateH(temp);
+                temp.setH(h);
+                
+                // set f after g and h were calculated
+                temp.setF();
+            }
         }
     }
     
@@ -161,37 +170,44 @@ public class AStar {
      * @param in the node that is being searched
      */
     public void searchCol(Node in) {
+        Node temp; // point to node for less verbosity
         int g;
         int h;
-        if(board[in.getRow()][in.getCol()-1].getType() != 1) {
-            board[in.getRow()][in.getCol()-1].setParent(in);
-            openList.add(board[in.getRow()][in.getCol()-1]);
-            
-            // calculate g if traversable node was found
-            g = this.calculateG(board[in.getRow()][in.getCol()-1]);
-            board[in.getRow()][in.getCol()-1].setG(g);
-            
-            // calculate h if traversable node was found
-            h = this.calculateH(board[in.getRow()][in.getCol()-1]);
-            board[in.getRow()][in.getCol()-1].setH(h);
-            
-            // set f after g and h were calculated
-            board[in.getRow()][in.getCol()-1].setF();
+        temp = board[in.getRow()][in.getCol()-1];
+        if(temp.getCol() < board[1].length && temp.getCol() > 0) {
+            if(temp.getType() != 1) {
+                temp.setParent(in);
+                openList.add(temp);
+                
+                // calculate g if traversable node was found
+                g = this.calculateG(temp);
+                temp.setG(g);
+                
+                // calculate h if traversable node was found
+                h = this.calculateH(temp);
+                temp.setH(h);
+                
+                // set f after g and h were calculated
+                temp.setF();
+            }
         }
-        if(board[in.getRow()][in.getCol()+1].getType() != 1) {
-            board[in.getRow()][in.getCol()+1].setParent(in);
-            openList.add(board[in.getRow()][in.getCol()+1]);
-            
-            // calculate g if traversable node was found
-            g = this.calculateG(board[in.getRow()][in.getCol()+1]);
-            board[in.getRow()][in.getCol()+1].setG(g);
-            
-            // calculate h if traversable node was found
-            h = this.calculateH(board[in.getRow()][in.getCol()+1]);
-            board[in.getRow()][in.getCol()+1].setH(h);
-            
-            // set f after g and h were calculated
-            board[in.getRow()][in.getCol()+1].setF();
+        temp = board[in.getRow()][in.getCol()+1];
+        if(temp.getCol() < board[1].length && temp.getCol() > 0) {
+            if(temp.getType() != 1) {
+                temp.setParent(in);
+                openList.add(temp);
+                
+                // calculate g if traversable node was found
+                g = this.calculateG(temp);
+                temp.setG(g);
+                
+                // calculate h if traversable node was found
+                h = this.calculateH(temp);
+                temp.setH(h);
+                
+                // set f after g and h were calculated
+                temp.setF();
+            }
         }
     }
     
@@ -225,5 +241,17 @@ public class AStar {
         y = Math.abs(y);
         
         return ((x + y) * move);
+    }
+    
+    /**
+     * Used to check queue contents
+     */
+    public void queueToString() {
+        Node[] arr1 = new Node[openList.size()];
+        Node[] arr2 = openList.toArray(arr1);
+        System.out.println("Queue contents: ");
+        for(int i = 0; i < arr2.length; i++) {
+            System.out.println(arr2[i].toString());
+        }
     }
 }
