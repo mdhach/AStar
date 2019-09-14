@@ -38,6 +38,12 @@ public class AStar {
         }
         board[start.getRow()][start.getCol()] = start;
         board[goal.getRow()][goal.getCol()] = goal;
+        
+        // initialize values for starting node
+        start.setG(0); // set start G value to 0
+        start.setH(calculateH(start)); // set start h value
+        start.setF(); // set start F value
+        
         openList.add(start);
     }
     
@@ -88,6 +94,15 @@ public class AStar {
      */
     public Node getNode(int i, int j) {
         return board[i][j];
+    }
+    
+    /**
+     * Returns the start node
+     * 
+     * @return Node the start node
+     */
+    public Node getStart() {
+        return start;
     }
     
     /**

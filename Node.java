@@ -1,5 +1,5 @@
 /**
- * Taken from the document provided under Files
+ * Document provided with minor edits
  */
 
 public class Node {
@@ -12,8 +12,10 @@ public class Node {
 		col = c;
 		type = t;
 		parent = null;
-		//type 0 is traverseable, 1 is not
-		//type 2 is start node, 3 is goal node
+		//type 0 is traversable
+		//type 1 is not traversable
+		//type 2 is start node
+		//type 3 is goal node
 		//type 4 is path node
 	}
 	
