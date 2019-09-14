@@ -139,12 +139,28 @@ public class AStar {
      * @return int distance (in blocks) between param node and goal node
      */
     public int calculateH(Node in) {
-    int x = in.getCol() - goal.getCol();
-    x = Math.abs(x); // get absolute value of col distance
+        int x = in.getCol() - goal.getCol();
+        x = Math.abs(x); // get absolute value of col distance
     
-    int y = in.getRow() - goal.getRow();
-    y = Math.abs(y); // get absolute value of row distance
+        int y = in.getRow() - goal.getRow();
+        y = Math.abs(y); // get absolute value of row distance
     
-    return ((x + y) * move); // return the sum of the values * move
+        return ((x + y) * move); // return the sum of the values * move
+    }
+    
+    /**
+     * Calculates the G value between a specified node and the start node
+     * 
+     * @param in the node that is being calculated
+     * @return int distance (in blocks) between param node and start node
+     */
+    public int calculateG(Node in) {
+        int x = in.getCol() - start.getCol();
+        x = Math.abs(x);
+        
+        int y = in.getRow() - start.getRow();
+        y = Math.abs(y);
+        
+        return ((x + y) * move);
     }
 }
