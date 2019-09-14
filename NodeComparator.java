@@ -14,9 +14,9 @@ public class NodeComparator implements Comparator<Node> {
      * @return int -1, 0, or 1 based on result
      */
     public int compare(Node in1, Node in2) {
-        if(in1.getF() < in2.getF()) {
+        if(in1.getF() > in2.getF()) {
             return 1;
-        } else if(in1.getF() > in2.getF()) {
+        } else if(in1.getF() < in2.getF()) {
             return -1;
         } else {
             return 0;

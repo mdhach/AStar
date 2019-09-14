@@ -17,6 +17,7 @@ public class Node {
 		//type 2 is start node
 		//type 3 is goal node
 		//type 4 is path node
+		//type 5 is visited
 	}
 	
 	//mutator methods to set values

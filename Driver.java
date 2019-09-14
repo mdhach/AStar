@@ -22,7 +22,8 @@ public class Driver {
         game.generateBoard();
         game.generateBlock();
         game.printState();
-        game.search(game.getStart());
-        game.queueToString();
+        game.search();
+        //game.queueToString();
+        game.printState();
     }
 }
