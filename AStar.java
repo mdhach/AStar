@@ -9,6 +9,7 @@ import java.util.*;
  * @version 9/11/2019
  */
 public class AStar {
+    final int move = 10;
     private Node[][] board;
     private PriorityQueue<Node> openList;
     private Node start;
@@ -16,7 +17,7 @@ public class AStar {
     private Comparator<Node> comparator;
     
     /**
-     * Init constructor for Node board and neighbor queue
+     * Init constructor
      */
     public AStar(int sR, int sC, int gR, int gC) {
         comparator = new NodeComparator();
@@ -129,5 +130,21 @@ public class AStar {
             board[in.getRow()][in.getCol()+1].setParent(in);
             openList.add(board[in.getRow()][in.getCol()+1]);
         }
+    }
+    
+    /**
+     * Calculates the heuristic between a specified node and the goal node
+     * 
+     * @param in the node that is being calculated
+     * @return int distance (in blocks) between param node and goal node
+     */
+    public int calculateH(Node in) {
+    int x = in.getCol() - goal.getCol();
+    x = Math.abs(x); // get absolute value of col distance
+    
+    int y = in.getRow() - goal.getRow();
+    y = Math.abs(y); // get absolute value of row distance
+    
+    return ((x + y) * move); // return the sum of the values * move
     }
 }
