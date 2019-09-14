@@ -38,6 +38,7 @@ public class AStar {
         }
         board[start.getRow()][start.getCol()] = start;
         board[goal.getRow()][goal.getCol()] = goal;
+        openList.add(start);
     }
     
     /**
@@ -95,7 +96,6 @@ public class AStar {
      * @param in the node that is being searched
      */
     public void search(Node in) {
-        openList.add(in);
         this.searchCol(in);
         this.searchRow(in);
     }
@@ -106,13 +106,37 @@ public class AStar {
      * @param in the node that is being searched
      */
     public void searchRow(Node in) {
+        int g;
+        int h;
         if(board[in.getRow()-1][in.getCol()].getType() != 1) {
             board[in.getRow()-1][in.getCol()].setParent(in);
             openList.add(board[in.getRow()-1][in.getCol()]);
+            
+            // calculate g if traversable node was found
+            g = this.calculateG(board[in.getRow()-1][in.getCol()]);
+            board[in.getRow()-1][in.getCol()].setG(g);
+            
+            // calculate h if traversable node was found
+            h = this.calculateH(board[in.getRow()-1][in.getCol()]);
+            board[in.getRow()-1][in.getCol()].setH(h);
+            
+            // set f after g and h were calculated
+            board[in.getRow()-1][in.getCol()].setF();
         }
         if(board[in.getRow()+1][in.getCol()].getType() != 1) {
             board[in.getRow()+1][in.getCol()].setParent(in);
             openList.add(board[in.getRow()+1][in.getCol()]);
+            
+            // calculate g if traversable node was found
+            g = calculateG(board[in.getRow()+1][in.getCol()]);
+            board[in.getRow()+1][in.getCol()].setG(g);
+            
+            // calculate h if traversable node was found
+            h = calculateH(board[in.getRow()+1][in.getCol()]);
+            board[in.getRow()+1][in.getCol()].setH(h);
+            
+            // set f after g and h were calculated
+            board[in.getRow()+1][in.getCol()].setF();
         }
     }
     
@@ -122,13 +146,37 @@ public class AStar {
      * @param in the node that is being searched
      */
     public void searchCol(Node in) {
+        int g;
+        int h;
         if(board[in.getRow()][in.getCol()-1].getType() != 1) {
             board[in.getRow()][in.getCol()-1].setParent(in);
             openList.add(board[in.getRow()][in.getCol()-1]);
+            
+            // calculate g if traversable node was found
+            g = this.calculateG(board[in.getRow()][in.getCol()-1]);
+            board[in.getRow()][in.getCol()-1].setG(g);
+            
+            // calculate h if traversable node was found
+            h = this.calculateH(board[in.getRow()][in.getCol()-1]);
+            board[in.getRow()][in.getCol()-1].setH(h);
+            
+            // set f after g and h were calculated
+            board[in.getRow()][in.getCol()-1].setF();
         }
         if(board[in.getRow()][in.getCol()+1].getType() != 1) {
             board[in.getRow()][in.getCol()+1].setParent(in);
             openList.add(board[in.getRow()][in.getCol()+1]);
+            
+            // calculate g if traversable node was found
+            g = this.calculateG(board[in.getRow()][in.getCol()+1]);
+            board[in.getRow()][in.getCol()+1].setG(g);
+            
+            // calculate h if traversable node was found
+            h = this.calculateH(board[in.getRow()][in.getCol()+1]);
+            board[in.getRow()][in.getCol()+1].setH(h);
+            
+            // set f after g and h were calculated
+            board[in.getRow()][in.getCol()+1].setF();
         }
     }
     
