@@ -69,6 +69,7 @@ public class AStar {
      * Prints a string representation of the board
      */
     public void printState() {
+        String p = "\u2022";
         for(int i = 0; i < 15; i++) {
             for(int j = 0; j < 15; j++) {
                 if(this.getNode(i, j).getType() == 0) {
@@ -78,7 +79,7 @@ public class AStar {
                 } else if(this.getNode(i, j).getType() == 3) {
                     System.out.print("[G]");
                 } else if(this.getNode(i, j).getType() == 5) {
-                    System.out.print("[.]");
+                    System.out.print("[" + p + "]");
                 } else {
                     System.out.print("[#]");
                 }
