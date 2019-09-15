@@ -6,7 +6,7 @@ import java.util.*;
  * and goal node.
  * 
  * @author Mardi
- * @version 9/11/2019
+ * @version 9/14/2019
  */
 public class AStar {
     final int move = 10;
@@ -81,7 +81,7 @@ public class AStar {
                 } else if(this.getNode(i, j).getType() == 5) {
                     System.out.print("[" + p + "]");
                 } else {
-                    System.out.print("[#]");
+                    System.out.print("[%]");
                 }
             }
             System.out.println();
@@ -113,6 +113,7 @@ public class AStar {
         if(!this.checkGoal(temp)) {
             this.searchCol(temp);
             this.searchRow(temp);
+            this.searchDia(temp);
             this.search();
         }
     }
@@ -126,7 +127,7 @@ public class AStar {
         Node temp; // point to node for less verbosity
         int g;
         int h;
-        if(in.getRow()-1 < board[0].length && in.getRow()-1 >= 0) {
+        if(this.checkBounds(in.getRow()-1, in.getCol())) {
             temp = board[in.getRow()-1][in.getCol()];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
@@ -146,7 +147,7 @@ public class AStar {
                 openList.add(temp);
             }
         }
-        if(in.getRow()+1 < board[0].length && in.getRow()+1 >= 0) {
+        if(this.checkBounds(in.getRow()+1, in.getCol())) {
             temp = board[in.getRow()+1][in.getCol()];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
@@ -177,7 +178,7 @@ public class AStar {
         Node temp; // point to node for less verbosity
         int g;
         int h;
-        if(in.getCol()-1 < board[1].length && in.getCol()-1 >= 0) {
+        if(this.checkBounds(in.getRow(), in.getCol()-1)) {
             temp = board[in.getRow()][in.getCol()-1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
@@ -197,7 +198,7 @@ public class AStar {
                 openList.add(temp);
             }
         }
-        if(in.getCol()+1 < board[1].length && in.getCol()+1 >= 0) {
+        if(this.checkBounds(in.getRow(), in.getCol()+1)) {
             temp = board[in.getRow()][in.getCol()+1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
@@ -214,6 +215,69 @@ public class AStar {
                 temp.setF();
                 
                 // add to queue
+                openList.add(temp);
+            }
+        }
+    }
+    
+    /**
+     * Used to search diagonal nodes
+     * 
+     * @param in
+     */
+    public void searchDia(Node in) {
+        Node temp;
+        int g;
+        int h;
+        // top left
+        if(this.checkBounds(in.getRow()-1, in.getCol()-1)) {
+            temp = board[in.getRow()-1][in.getCol()-1];
+            if(temp.getType() != 1 && temp.getType() != 5) {
+                temp.setParent(in);
+                g = this.calculateG(temp);
+                temp.setG(g);
+                h = this.calculateH(temp);
+                temp.setH(h);
+                temp.setF();
+                openList.add(temp);
+            }
+        }
+        // top right
+        if(this.checkBounds(in.getRow()-1, in.getCol()+1)) {
+            temp = board[in.getRow()-1][in.getCol()+1];
+            if(temp.getType() != 1 && temp.getType() != 5) {
+                temp.setParent(in);
+                g = this.calculateG(temp);
+                temp.setG(g);
+                h = this.calculateH(temp);
+                temp.setH(h);
+                temp.setF();
+                openList.add(temp);
+            }
+        }
+        // bottom left
+        if(this.checkBounds(in.getRow()+1, in.getCol()-1)) {
+            temp = board[in.getRow()+1][in.getCol()-1];
+            if(temp.getType() != 1 && temp.getType() != 5) {
+                temp.setParent(in);
+                g = this.calculateG(temp);
+                temp.setG(g);
+                h = this.calculateH(temp);
+                temp.setH(h);
+                temp.setF();
+                openList.add(temp);
+            }
+        }
+        // bottom right
+        if(this.checkBounds(in.getRow()+1, in.getCol()+1)) {
+            temp = board[in.getRow()+1][in.getCol()+1];
+            if(temp.getType() != 1 && temp.getType() != 5) {
+                temp.setParent(in);
+                g = this.calculateG(temp);
+                temp.setG(g);
+                h = this.calculateH(temp);
+                temp.setH(h);
+                temp.setF();
                 openList.add(temp);
             }
         }
@@ -272,6 +336,20 @@ public class AStar {
      */
     public boolean checkGoal(Node in) {
         if(in == goal) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Used to check if node is in bounds
+     * 
+     * @param i the row of the node
+     * @param j the col of the node
+     * @return boolean true if in bounds; false by default
+     */
+    public boolean checkBounds(int i, int j) {
+        if(i < board[1].length && i >= 0 && j < board[0].length && j >= 0) {
             return true;
         }
         return false;

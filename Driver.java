@@ -24,6 +24,7 @@ public class Driver {
         game.printState();
         game.search();
         //game.queueToString();
+        System.out.println("\nSolution: ");
         game.printState();
     }
 }
