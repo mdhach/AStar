@@ -8,6 +8,7 @@ public class Driver {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         int startRow, startCol, goalRow, goalCol;
+        String p = "\u2022";
         
         System.out.println("Enter the row for your starting node: ");
         startRow = input.nextInt();
@@ -23,6 +24,11 @@ public class Driver {
         game.generateBlock();
         game.printState();
         game.search();
+        System.out.println("\nLegend: \n"
+        + "Start Node:\tS\n"
+        + "Goal Node:\tG\n"
+        + "Blocked Node:\t%\n"
+        + "Visited Node:\t" + p);
         //game.queueToString();
         if(game.getVictory()) {
             System.out.println("\nSolution: ");

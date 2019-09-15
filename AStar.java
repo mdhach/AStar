@@ -19,6 +19,11 @@ public class AStar {
     
     /**
      * Init constructor
+     * 
+     * @param sR the row for start node
+     * @param sC the col for start node
+     * @param gR the row for goal node
+     * @param gC the col for goal node
      */
     public AStar(int sR, int sC, int gR, int gC) {
         comparator = new NodeComparator();
@@ -109,19 +114,18 @@ public class AStar {
     }
     
     /**
-     * Searches the row and col of this node
-     * 
+     * Main search method from start to goal
      */
     public void search() {
         // pop off top of queue and search
         Node temp;
         if(openList.peek() != null) {
-            temp = openList.poll();
+            temp = openList.poll(); // check if empty; queue failstate
         } else {
             return;
         }
         if(temp.getType() != 2 && temp.getType() != 3) {
-            temp.setType(5);
+            temp.setType(5); // set type 5 if visited
         }
         //System.out.println("POPPED: " + temp.toString()); // debug msg
         if(!this.checkGoal(temp)) {
