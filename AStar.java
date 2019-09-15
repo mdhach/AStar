@@ -14,7 +14,7 @@ public class AStar {
     private int key;
     private Node[][] board;
     private PriorityQueue<Node> openList;
-    private Deque<Node> stack;
+    private Stack<Node> stack;
     private Hashtable<Integer, Node> closedList;
     private Node start;
     private Node goal;
@@ -30,7 +30,7 @@ public class AStar {
         goal = new Node(gR, gC, 3);
         board = new Node[15][15];
         openList = new PriorityQueue<Node>(11, comparator);
-        stack = new ArrayDeque<Node>();
+        stack = new Stack<Node>();
         closedList = new Hashtable<Integer, Node>();
         key = 0;
         victory = false;
@@ -139,7 +139,6 @@ public class AStar {
             this.stack.push(temp);
             this.search();
         } else {
-            temp = stack.pop();
             victory = true;
             this.backtrack(temp);
         }
@@ -399,6 +398,18 @@ public class AStar {
     public void backtrack(Node in) {
         Node temp;
         while(true) {
+            if(!stack.empty()){
+                temp = stack.pop().getParent();
+                if(temp.getType() != 2) {
+                    temp.setType(4);
+                }
+                this.backtrack(temp);
+            } else {
+                return;
+            }
+        }
+        /*
+        while(true) {
             if(in.getParent() != null) {
                 temp = in.getParent();
                 temp.setType(4);
@@ -409,6 +420,7 @@ public class AStar {
                 break;
             }
         }
+        */
     }
     
     /**
