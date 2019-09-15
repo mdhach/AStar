@@ -21,9 +21,10 @@ public class Driver {
         AStar game = new AStar(startRow, startCol, goalRow, goalCol);
         game.generateBoard();
         game.generateBlock();
+        System.out.println("Initial State: ");
         game.printState();
         game.search();
-        //game.queueToString();
+        //game.queueToString(); debug msg
         if(game.getVictory()) {
             System.out.println("\nSolution: ");
             game.printState();
