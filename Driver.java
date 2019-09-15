@@ -24,7 +24,13 @@ public class Driver {
         game.printState();
         game.search();
         //game.queueToString();
-        System.out.println("\nSolution: ");
-        game.printState();
+        if(game.getVictory()) {
+            System.out.println("\nSolution: ");
+            game.printState();
+        } else {
+            System.out.println("\nSorry! No path could be determined.");
+            game.printState();
+        }
+        
     }
 }

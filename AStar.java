@@ -15,6 +15,7 @@ public class AStar {
     private Node start;
     private Node goal;
     private Comparator<Node> comparator;
+    private boolean victory;
     
     /**
      * Init constructor
@@ -25,6 +26,7 @@ public class AStar {
         goal = new Node(gR, gC, 3);
         board = new Node[15][15];
         openList = new PriorityQueue<Node>(11, comparator);
+        victory = false;
     }
     
     /**
@@ -51,6 +53,7 @@ public class AStar {
      * Sets random nodes to be nontraversable
      */
     public void generateBlock() {
+        
         Random rand = new Random();
         int i = rand.nextInt(15);
         int j = rand.nextInt(15);
@@ -63,6 +66,12 @@ public class AStar {
             i = rand.nextInt(15);
             j = rand.nextInt(15);
         }
+        
+        /* start node(0, 0) and goal node(14, 14) fail check
+        board[13][14].setType(1);
+        board[14][13].setType(1);
+        board[13][13].setType(1);
+        */
     }
     
     /**
@@ -105,16 +114,23 @@ public class AStar {
      */
     public void search() {
         // pop off top of queue and search
-        Node temp = openList.poll();
+        Node temp;
+        if(openList.peek() != null) {
+            temp = openList.poll();
+        } else {
+            return;
+        }
         if(temp.getType() != 2 && temp.getType() != 3) {
             temp.setType(5);
         }
-        //System.out.println("POPPED: " + temp.toString());
+        //System.out.println("POPPED: " + temp.toString()); // debug msg
         if(!this.checkGoal(temp)) {
             this.searchCol(temp);
             this.searchRow(temp);
             this.searchDia(temp);
             this.search();
+        } else {
+            victory = true;
         }
     }
     
@@ -353,5 +369,9 @@ public class AStar {
             return true;
         }
         return false;
+    }
+    
+    public boolean getVictory() {
+        return victory;
     }
 }
