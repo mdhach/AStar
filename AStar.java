@@ -122,10 +122,13 @@ public class AStar {
         Node temp;
         if(openList.peek() != null) {
             temp = openList.poll(); // check if empty; queue failstate
+            // debug message
+            /*
             System.out.println("POPPED: " + temp.toString() + " "
             + "F: " + temp.getF() + " "
             + "G: " + temp.getG() + " "
-            + "H: " + temp.getH()); // debug msg
+            + "H: " + temp.getH());
+            */
         } else {
             return;
         }
