@@ -10,6 +10,7 @@ import java.util.*;
  */
 public class AStar {
     final int move = 10;
+    final int moveDia = 14;
     private Node[][] board;
     private PriorityQueue<Node> openList;
     private Node start;
@@ -48,7 +49,7 @@ public class AStar {
         
         // initialize values for starting node
         start.setG(0); // set start G value to 0
-        start.setH(calculateH(start)); // set start h value
+        start.setH(calculateH(start, 0)); // set start h value
         start.setF(); // set start F value
         
         openList.add(start);
@@ -121,13 +122,17 @@ public class AStar {
         Node temp;
         if(openList.peek() != null) {
             temp = openList.poll(); // check if empty; queue failstate
+            System.out.println("POPPED: " + temp.toString() + " "
+            + "F: " + temp.getF() + " "
+            + "G: " + temp.getG() + " "
+            + "H: " + temp.getH()); // debug msg
         } else {
             return;
         }
         if(temp.getType() != 2 && temp.getType() != 3) {
             temp.setType(5); // set type 5 if visited
         }
-        //System.out.println("POPPED: " + temp.toString()); // debug msg
+        
         if(!this.checkGoal(temp)) {
             this.searchCol(temp);
             this.searchRow(temp);
@@ -153,11 +158,11 @@ public class AStar {
                 temp.setParent(in);
                 
                 // calculate g if traversable node was found
-                g = this.calculateG(temp);
+                g = this.calculateG(temp, 0);
                 temp.setG(g);
                 
                 // calculate h if traversable node was found
-                h = this.calculateH(temp);
+                h = this.calculateH(temp, 0);
                 temp.setH(h);
                 
                 // set f after g and h were calculated
@@ -173,11 +178,11 @@ public class AStar {
                 temp.setParent(in);
                 
                 // calculate g if traversable node was found
-                g = calculateG(temp);
+                g = calculateG(temp, 0);
                 temp.setG(g);
                 
                 // calculate h if traversable node was found
-                h = calculateH(temp);
+                h = calculateH(temp, 0);
                 temp.setH(h);
                 
                 // set f after g and h were calculated
@@ -204,11 +209,11 @@ public class AStar {
                 temp.setParent(in);
                 
                 // calculate g if traversable node was found
-                g = this.calculateG(temp);
+                g = this.calculateG(temp, 0);
                 temp.setG(g);
                 
                 // calculate h if traversable node was found
-                h = this.calculateH(temp);
+                h = this.calculateH(temp, 0);
                 temp.setH(h);
                 
                 // set f after g and h were calculated
@@ -224,11 +229,11 @@ public class AStar {
                 temp.setParent(in);
                 
                 // calculate g if traversable node was found
-                g = this.calculateG(temp);
+                g = this.calculateG(temp, 0);
                 temp.setG(g);
                 
                 // calculate h if traversable node was found
-                h = this.calculateH(temp);
+                h = this.calculateH(temp, 0);
                 temp.setH(h);
                 
                 // set f after g and h were calculated
@@ -254,9 +259,9 @@ public class AStar {
             temp = board[in.getRow()-1][in.getCol()-1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                g = this.calculateG(temp);
+                g = this.calculateG(temp, 1);
                 temp.setG(g);
-                h = this.calculateH(temp);
+                h = this.calculateH(temp, 1);
                 temp.setH(h);
                 temp.setF();
                 openList.add(temp);
@@ -267,9 +272,9 @@ public class AStar {
             temp = board[in.getRow()-1][in.getCol()+1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                g = this.calculateG(temp);
+                g = this.calculateG(temp, 1);
                 temp.setG(g);
-                h = this.calculateH(temp);
+                h = this.calculateH(temp, 1);
                 temp.setH(h);
                 temp.setF();
                 openList.add(temp);
@@ -280,9 +285,9 @@ public class AStar {
             temp = board[in.getRow()+1][in.getCol()-1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                g = this.calculateG(temp);
+                g = this.calculateG(temp, 1);
                 temp.setG(g);
-                h = this.calculateH(temp);
+                h = this.calculateH(temp, 1);
                 temp.setH(h);
                 temp.setF();
                 openList.add(temp);
@@ -293,9 +298,9 @@ public class AStar {
             temp = board[in.getRow()+1][in.getCol()+1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                g = this.calculateG(temp);
+                g = this.calculateG(temp, 1);
                 temp.setG(g);
-                h = this.calculateH(temp);
+                h = this.calculateH(temp, 1);
                 temp.setH(h);
                 temp.setF();
                 openList.add(temp);
@@ -309,14 +314,17 @@ public class AStar {
      * @param in the node that is being calculated
      * @return int distance (in blocks) between param node and goal node
      */
-    public int calculateH(Node in) {
+    public int calculateH(Node in, int type) {
         int x = in.getCol() - goal.getCol();
         x = Math.abs(x); // get absolute value of col distance
     
         int y = in.getRow() - goal.getRow();
         y = Math.abs(y); // get absolute value of row distance
     
-        return ((x + y) * move); // return the sum of the values * move
+        if(type == 0) {
+            return ((x + y) * move);
+        }
+        return ((x + y) * moveDia);
     }
     
     /**
@@ -325,14 +333,17 @@ public class AStar {
      * @param in the node that is being calculated
      * @return int distance (in blocks) between param node and start node
      */
-    public int calculateG(Node in) {
+    public int calculateG(Node in, int type) {
         int x = in.getCol() - start.getCol();
         x = Math.abs(x);
         
         int y = in.getRow() - start.getRow();
         y = Math.abs(y);
         
-        return ((x + y) * move);
+        if(type == 0) {
+            return ((x + y) * move);
+        }
+        return ((x + y) * moveDia);
     }
     
     /**
