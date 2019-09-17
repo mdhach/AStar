@@ -22,6 +22,7 @@ public class AStar {
     
     /**
      * Init constructor
+     * 
      */
     public AStar() {
     	input = new Scanner(System.in);
@@ -29,6 +30,11 @@ public class AStar {
     
     /**
      * Overload constructor
+     * 
+     * @param sR start node row
+     * @param sC start node col
+     * @param gR goal node row
+     * @param gC goal node col
      */
     public AStar(int sR, int sC, int gR, int gC) {
         comparator = new NodeComparator();
@@ -78,9 +84,9 @@ public class AStar {
             j = rand.nextInt(15);
         }
 
-        // start node(0, 0) and goal node(14, 14) fail check
+        // start node(0, 0) and goal node(14, 14); fail check
         /*
-        board[13][14].setType(1);
+        board[13][14].setType(1); blocks the goal node at(14, 14)
         board[14][13].setType(1);
         board[13][13].setType(1);
         */
@@ -114,11 +120,13 @@ public class AStar {
      * 
      */
     public void search() {
-        // pop off top of queue and search
+        // pop off top of queue (minheap) and search
         Node temp;
         if(openList.peek() != null) {
             temp = openList.poll();
-            closedList.push(temp);
+            if(temp.getParent() != null && temp.getParent().getF() >= temp.getF()) {
+            	closedList.push(temp);
+            }
         } else {
             return;
         }
@@ -126,6 +134,7 @@ public class AStar {
             temp.setType(5);
         }
         //System.out.println("POPPED: " + temp.toString()); // debug msg
+        // determine if current node is the goal
         if(!this.checkGoal(temp)) {
             this.searchCol(temp);
             this.searchRow(temp);
