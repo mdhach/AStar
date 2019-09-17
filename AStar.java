@@ -6,7 +6,7 @@ import java.util.*;
  * and goal node.
  * 
  * @author Mardi
- * @version 9/14/2019
+ * @version 9/17/2019
  */
 public class AStar {
     final int move = 10;
@@ -83,7 +83,6 @@ public class AStar {
      */
     public void printState() {
         String p = "\u2022";
-        System.out.println("Print type: 5");
         for(int i = 0; i < 15; i++) {
             for(int j = 0; j < 15; j++) {
                 if(this.getNode(i, j).getType() == 0) {
@@ -100,17 +99,6 @@ public class AStar {
             }
             System.out.println();
         }
-    }
-
-    /**
-     * Returns node at index
-     * 
-     * @param i row of Node board
-     * @param j col of Node board
-     * @return Node at specified index
-     */
-    public Node getNode(int i, int j) {
-        return board[i][j];
     }
     
     /**
@@ -174,19 +162,11 @@ public class AStar {
             temp = board[in.getRow()+1][in.getCol()];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                
-                // calculate g if traversable node was found
                 g = calculateG(temp, 0);
                 temp.setG(g);
-                
-                // calculate h if traversable node was found
                 h = calculateH(temp, 0);
                 temp.setH(h);
-                
-                // set f after g and h were calculated
                 temp.setF();
-                
-                // add to queue
                 openList.add(temp);
             }
         }
@@ -205,16 +185,10 @@ public class AStar {
             temp = board[in.getRow()][in.getCol()-1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                
-                // calculate g if traversable node was found
                 g = this.calculateG(temp, 0);
                 temp.setG(g);
-                
-                // calculate h if traversable node was found
                 h = this.calculateH(temp, 0);
                 temp.setH(h);
-                
-                // set f after g and h were calculated
                 temp.setF();
                 
                 // add to queue
@@ -225,19 +199,11 @@ public class AStar {
             temp = board[in.getRow()][in.getCol()+1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                
-                // calculate g if traversable node was found
                 g = this.calculateG(temp, 0);
                 temp.setG(g);
-                
-                // calculate h if traversable node was found
                 h = this.calculateH(temp, 0);
                 temp.setH(h);
-                
-                // set f after g and h were calculated
                 temp.setF();
-                
-                // add to queue
                 openList.add(temp);
             }
         }
@@ -414,5 +380,16 @@ public class AStar {
      */
     public boolean getVictory() {
         return victory;
+    }
+    
+    /**
+     * Returns node at index
+     * 
+     * @param i row of Node board
+     * @param j col of Node board
+     * @return Node at specified index
+     */
+    public Node getNode(int i, int j) {
+        return board[i][j];
     }
 }
