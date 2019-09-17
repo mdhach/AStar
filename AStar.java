@@ -18,9 +18,17 @@ public class AStar {
     private Node goal;
     private Comparator<Node> comparator;
     private boolean victory;
+    private Scanner input;
     
     /**
      * Init constructor
+     */
+    public AStar() {
+    	input = new Scanner(System.in);
+    }
+    
+    /**
+     * Overload constructor
      */
     public AStar(int sR, int sC, int gR, int gC) {
         comparator = new NodeComparator();
@@ -391,5 +399,52 @@ public class AStar {
      */
     public Node getNode(int i, int j) {
         return board[i][j];
+    }
+    
+    /**
+     * Method used to determine if user continues or quits
+     * 
+     * @return char users decision
+     */
+    public char getChar() {
+    	input = new Scanner(System.in);
+        char charIn = 0;
+        boolean escape = false;
+        
+        while(!escape) {
+            try {
+            	System.out.println("\nContinue? Y/N: ");
+            	charIn = input.next().charAt(0);
+            	charIn = Character.toUpperCase(charIn);
+            	if(charIn != 'Y' && charIn != 'N') {
+            		throw new Exception("Neither Y or N");
+            	} else {
+            		escape = true;
+            	}
+            } catch (Exception c) {
+        		System.out.println("ERROR! Enter either Y or N (not case sensitive)");
+            }
+        }
+        return charIn;
+    }
+    
+    /**
+     * Initializes the starting text
+     * 
+     * @return int[] values that are required for a new AStar object
+     */
+    public int[] init() {
+    	int[] arr = new int[4];
+    	
+    	System.out.println("Enter the row for your starting node: ");
+        arr[0] = input.nextInt();
+        System.out.println("Enter the col for your starting node: ");
+        arr[1] = input.nextInt();
+        System.out.println("Enter the row for your goal node: ");
+        arr[2] = input.nextInt();
+        System.out.println("Enter the col for your goal node: ");
+        arr[3] = input.nextInt();
+        
+        return arr;
     }
 }
