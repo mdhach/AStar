@@ -116,6 +116,18 @@ public class AStar {
     }
     
     /**
+     * Used to print the legend for the board
+     */
+    public void printLegend() {
+    	String p = "\u2022";
+    	System.out.println("\nLegend: \n"
+    	        + "Start Node:\tS\n"
+    	        + "Goal Node:\tG\n"
+    	        + "Blocked Node:\t%\n"
+    	        + "Visited Node:\t" + p);
+    }
+    
+    /**
      * Searches the row and col of this node
      * 
      */

@@ -16,6 +16,7 @@ public class Driver {
 	        System.out.println("Initial State: ");
 	        game.printState();
 	        game.search();
+	        game.printLegend();
 	        //game.queueToString(); debug msg
 	        if(game.getVictory()) {
 	            System.out.println("\nSolution: ");
