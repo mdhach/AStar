@@ -11,11 +11,9 @@ import java.util.*;
 public class AStar {
     final int move = 10;
     final int moveDia = 14;
-    private int key;
     private Node[][] board;
     private PriorityQueue<Node> openList;
-    private Stack<Node> stack;
-    private Hashtable<Integer, Node> closedList;
+    private Stack<Node> closedList;
     private Node start;
     private Node goal;
     private Comparator<Node> comparator;
@@ -30,9 +28,7 @@ public class AStar {
         goal = new Node(gR, gC, 3);
         board = new Node[15][15];
         openList = new PriorityQueue<Node>(11, comparator);
-        stack = new Stack<Node>();
-        closedList = new Hashtable<Integer, Node>();
-        key = 0;
+        closedList = new Stack<Node>();
         victory = false;
     }
     
@@ -87,6 +83,7 @@ public class AStar {
      */
     public void printState() {
         String p = "\u2022";
+        System.out.println("Print type: 5");
         for(int i = 0; i < 15; i++) {
             for(int j = 0; j < 15; j++) {
                 if(this.getNode(i, j).getType() == 0) {
@@ -125,6 +122,7 @@ public class AStar {
         Node temp;
         if(openList.peek() != null) {
             temp = openList.poll();
+            closedList.push(temp);
         } else {
             return;
         }
@@ -136,7 +134,6 @@ public class AStar {
             this.searchCol(temp);
             this.searchRow(temp);
             this.searchDia(temp);
-            this.stack.push(temp);
             this.search();
         } else {
             victory = true;
@@ -398,8 +395,8 @@ public class AStar {
     public void backtrack(Node in) {
         Node temp;
         while(true) {
-            if(!stack.empty()){
-                temp = stack.pop().getParent();
+            if(!closedList.empty()){
+                temp = closedList.pop().getParent();
                 if(temp.getType() != 2) {
                     temp.setType(4);
                 }
@@ -408,19 +405,6 @@ public class AStar {
                 return;
             }
         }
-        /*
-        while(true) {
-            if(in.getParent() != null) {
-                temp = in.getParent();
-                temp.setType(4);
-                closedList.put(key, temp);
-                key++;
-                this.backtrack(temp.getParent());
-            } else {
-                break;
-            }
-        }
-        */
     }
     
     /**
