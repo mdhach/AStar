@@ -93,8 +93,8 @@ public class AStar {
         String p = "\u2022";
         for(int i = 0; i < 15; i++) {
             for(int j = 0; j < 15; j++) {
-                if(this.getNode(i, j).getType() == 0) {
-                    System.out.print("[ ]");
+                if(this.getNode(i, j).getType() == 1) {
+                    System.out.print("[%]");
                 } else if(this.getNode(i, j).getType() == 2) {
                     System.out.print("[S]");
                 } else if(this.getNode(i, j).getType() == 3) {
@@ -102,7 +102,7 @@ public class AStar {
                 } else if(this.getNode(i, j).getType() == 4) {
                     System.out.print("[" + p + "]");
                 } else {
-                    System.out.print("[%]");
+                	System.out.print("[ ]");
                 }
             }
             System.out.println();
