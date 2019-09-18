@@ -13,7 +13,6 @@ public class AStar {
     final int moveDia = 14;
     private Node[][] board;
     private PriorityQueue<Node> openList;
-    private Stack<Node> closedList;
     private Node start;
     private Node goal;
     private Comparator<Node> comparator;
@@ -42,7 +41,6 @@ public class AStar {
         goal = new Node(gR, gC, 3);
         board = new Node[15][15];
         openList = new PriorityQueue<Node>(11, comparator);
-        closedList = new Stack<Node>();
         victory = false;
     }
     
@@ -136,14 +134,11 @@ public class AStar {
         Node temp;
         if(openList.peek() != null) {
             temp = openList.poll();
-            if(temp.getParent() != null && temp.getParent().getF() >= temp.getF()) {
-            	closedList.push(temp);
-            }
         } else {
             return;
         }
         if(temp.getType() != 2 && temp.getType() != 3) {
-            temp.setType(5);
+            temp.setType(4);
         }
         //System.out.println("POPPED: " + temp.toString()); // debug msg
         // determine if current node is the goal
@@ -154,7 +149,6 @@ public class AStar {
             this.search();
         } else {
             victory = true;
-            this.backtrack(temp);
         }
     }
     
@@ -165,38 +159,18 @@ public class AStar {
      */
     public void searchRow(Node in) {
         Node temp; // point to node for less verbosity
-        int g;
-        int h;
         if(this.checkBounds(in.getRow()-1, in.getCol())) {
             temp = board[in.getRow()-1][in.getCol()];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                
-                // calculate g if traversable node was found
-                g = this.calculateG(temp, 0);
-                temp.setG(g);
-                
-                // calculate h if traversable node was found
-                h = this.calculateH(temp, 0);
-                temp.setH(h);
-                
-                // set f after g and h were calculated
-                temp.setF();
-                
-                // add to queue
-                openList.add(temp);
+                update(temp, 0);
             }
         }
         if(this.checkBounds(in.getRow()+1, in.getCol())) {
             temp = board[in.getRow()+1][in.getCol()];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                g = calculateG(temp, 0);
-                temp.setG(g);
-                h = calculateH(temp, 0);
-                temp.setH(h);
-                temp.setF();
-                openList.add(temp);
+                update(temp, 0);
             }
         }
     }
@@ -208,32 +182,18 @@ public class AStar {
      */
     public void searchCol(Node in) {
         Node temp; // point to node for less verbosity
-        int g;
-        int h;
         if(this.checkBounds(in.getRow(), in.getCol()-1)) {
             temp = board[in.getRow()][in.getCol()-1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                g = this.calculateG(temp, 0);
-                temp.setG(g);
-                h = this.calculateH(temp, 0);
-                temp.setH(h);
-                temp.setF();
-                
-                // add to queue
-                openList.add(temp);
+                update(temp, 0);
             }
         }
         if(this.checkBounds(in.getRow(), in.getCol()+1)) {
             temp = board[in.getRow()][in.getCol()+1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                g = this.calculateG(temp, 0);
-                temp.setG(g);
-                h = this.calculateH(temp, 0);
-                temp.setH(h);
-                temp.setF();
-                openList.add(temp);
+                update(temp, 0);
             }
         }
     }
@@ -245,19 +205,12 @@ public class AStar {
      */
     public void searchDia(Node in) {
         Node temp;
-        int g;
-        int h;
         // top left
         if(this.checkBounds(in.getRow()-1, in.getCol()-1)) {
             temp = board[in.getRow()-1][in.getCol()-1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                g = this.calculateG(temp, 1);
-                temp.setG(g);
-                h = this.calculateH(temp, 1);
-                temp.setH(h);
-                temp.setF();
-                openList.add(temp);
+                update(temp, 1);
             }
         }
         // top right
@@ -265,12 +218,7 @@ public class AStar {
             temp = board[in.getRow()-1][in.getCol()+1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                g = this.calculateG(temp, 1);
-                temp.setG(g);
-                h = this.calculateH(temp, 1);
-                temp.setH(h);
-                temp.setF();
-                openList.add(temp);
+                update(temp, 1);
             }
         }
         // bottom left
@@ -278,12 +226,7 @@ public class AStar {
             temp = board[in.getRow()+1][in.getCol()-1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                g = this.calculateG(temp, 1);
-                temp.setG(g);
-                h = this.calculateH(temp, 1);
-                temp.setH(h);
-                temp.setF();
-                openList.add(temp);
+                update(temp, 1);
             }
         }
         // bottom right
@@ -291,12 +234,7 @@ public class AStar {
             temp = board[in.getRow()+1][in.getCol()+1];
             if(temp.getType() != 1 && temp.getType() != 5) {
                 temp.setParent(in);
-                g = this.calculateG(temp, 1);
-                temp.setG(g);
-                h = this.calculateH(temp, 1);
-                temp.setH(h);
-                temp.setF();
-                openList.add(temp);
+                update(temp, 1);
             }
         }
     }
@@ -342,6 +280,20 @@ public class AStar {
         }
     }
     
+    public void update(Node in, int type) {
+    	int g, h;
+    	// calculate the G value and set node
+    	g = calculateG(in, type);
+        in.setG(g);
+        // calculate the H value and set node
+        h = calculateH(in, type);
+        in.setH(h);
+        // set F
+        in.setF();
+        // add to open list
+        openList.add(in);
+    }
+    
     /**
      * Used to check queue contents
      */
@@ -380,26 +332,6 @@ public class AStar {
             return true;
         }
         return false;
-    }
-    
-    /**
-     * Finds the parents of the final node to trace a path
-     * 
-     * @param in the node being traced
-     */
-    public void backtrack(Node in) {
-        Node temp;
-        while(true) {
-            if(!closedList.empty()){
-                temp = closedList.pop().getParent();
-                if(temp.getType() != 2) {
-                    temp.setType(4);
-                }
-                this.backtrack(temp);
-            } else {
-                return;
-            }
-        }
     }
     
     /**
