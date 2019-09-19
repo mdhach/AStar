@@ -13,6 +13,7 @@ public class AStar {
     final int moveDia = 14;
     private Node[][] board;
     private PriorityQueue<Node> openList;
+    private Set<Node> closedList;
     private Node start;
     private Node goal;
     private Comparator<Node> comparator;
@@ -41,6 +42,7 @@ public class AStar {
         goal = new Node(gR, gC, 3);
         board = new Node[15][15];
         openList = new PriorityQueue<Node>(11, comparator);
+        closedList = new HashSet<Node>();
         victory = false;
     }
     
@@ -68,7 +70,7 @@ public class AStar {
      * Sets random nodes to be nontraversable
      */
     public void generateBlock() {
-
+    	
         Random rand = new Random();
         int i = rand.nextInt(15);
         int j = rand.nextInt(15);
@@ -81,13 +83,13 @@ public class AStar {
             i = rand.nextInt(15);
             j = rand.nextInt(15);
         }
-
+		
         // start node(0, 0) and goal node(14, 14); fail check
         /*
         board[13][14].setType(1); blocks the goal node at(14, 14)
         board[14][13].setType(1);
         board[13][13].setType(1);
-        */
+        */      
     }
     
     /**
@@ -134,6 +136,7 @@ public class AStar {
         Node temp;
         if(openList.peek() != null) {
             temp = openList.poll();
+            closedList.add(temp);
         } else {
             return;
         }
@@ -160,18 +163,28 @@ public class AStar {
     public void searchRow(Node in) {
         Node temp; // point to node for less verbosity
         if(this.checkBounds(in.getRow()-1, in.getCol())) {
-            temp = board[in.getRow()-1][in.getCol()];
-            if(temp.getType() != 1 && temp.getType() != 5) {
-                temp.setParent(in);
-                update(temp, 0);
-            }
+        	if(!this.checkGoal(in)) {
+        		temp = board[in.getRow()-1][in.getCol()];
+                if(temp.getType() != 1 && temp.getType() != 5) {
+                    temp.setParent(in);
+                    update(temp, 0);
+                }
+        	} else {
+        		victory = true;
+        		return;
+        	}
         }
         if(this.checkBounds(in.getRow()+1, in.getCol())) {
-            temp = board[in.getRow()+1][in.getCol()];
-            if(temp.getType() != 1 && temp.getType() != 5) {
-                temp.setParent(in);
-                update(temp, 0);
-            }
+        	if(!this.checkGoal(in)) {
+        		temp = board[in.getRow()+1][in.getCol()];
+                if(temp.getType() != 1 && temp.getType() != 5) {
+                    temp.setParent(in);
+                    update(temp, 0);
+                }
+        	} else {
+        		victory = true;
+        		return;
+        	}
         }
     }
     
@@ -183,18 +196,28 @@ public class AStar {
     public void searchCol(Node in) {
         Node temp; // point to node for less verbosity
         if(this.checkBounds(in.getRow(), in.getCol()-1)) {
-            temp = board[in.getRow()][in.getCol()-1];
-            if(temp.getType() != 1 && temp.getType() != 5) {
-                temp.setParent(in);
-                update(temp, 0);
-            }
+        	if(!this.checkGoal(in)) {
+        		temp = board[in.getRow()][in.getCol()-1];
+                if(temp.getType() != 1 && temp.getType() != 5) {
+                    temp.setParent(in);
+                    update(temp, 0);
+                }
+        	} else {
+        		victory = true;
+        		return;
+        	}
         }
         if(this.checkBounds(in.getRow(), in.getCol()+1)) {
-            temp = board[in.getRow()][in.getCol()+1];
-            if(temp.getType() != 1 && temp.getType() != 5) {
-                temp.setParent(in);
-                update(temp, 0);
-            }
+        	if(!this.checkGoal(in)) {
+        		temp = board[in.getRow()][in.getCol()+1];
+                if(temp.getType() != 1 && temp.getType() != 5) {
+                    temp.setParent(in);
+                    update(temp, 0);
+                }
+        	} else {
+        		victory = true;
+        		return;
+        	}
         }
     }
     
@@ -207,35 +230,59 @@ public class AStar {
         Node temp;
         // top left
         if(this.checkBounds(in.getRow()-1, in.getCol()-1)) {
-            temp = board[in.getRow()-1][in.getCol()-1];
-            if(temp.getType() != 1 && temp.getType() != 5) {
-                temp.setParent(in);
-                update(temp, 1);
-            }
+        	if(!this.checkGoal(in)) {
+        		temp = board[in.getRow()-1][in.getCol()-1];
+                if(temp.getType() != 1 && temp.getType() != 5) {
+                    temp.setParent(in);
+                    update(temp, 1);
+                }
+        	} else {
+        		victory = true;
+        		return;
+        	}
+            
         }
         // top right
         if(this.checkBounds(in.getRow()-1, in.getCol()+1)) {
-            temp = board[in.getRow()-1][in.getCol()+1];
-            if(temp.getType() != 1 && temp.getType() != 5) {
-                temp.setParent(in);
-                update(temp, 1);
-            }
+        	if(!this.checkGoal(in)) {
+        		temp = board[in.getRow()-1][in.getCol()+1];
+                if(temp.getType() != 1 && temp.getType() != 5) {
+                    temp.setParent(in);
+                    update(temp, 1);
+                }
+        	} else {
+        		victory = true;
+        		return;
+        	}
+            
         }
         // bottom left
         if(this.checkBounds(in.getRow()+1, in.getCol()-1)) {
-            temp = board[in.getRow()+1][in.getCol()-1];
-            if(temp.getType() != 1 && temp.getType() != 5) {
-                temp.setParent(in);
-                update(temp, 1);
-            }
+        	if(!this.checkGoal(in)) {
+        		temp = board[in.getRow()+1][in.getCol()-1];
+                if(temp.getType() != 1 && temp.getType() != 5) {
+                    temp.setParent(in);
+                    update(temp, 1);
+                }
+        	} else {
+        		victory = true;
+        		return;
+        	}
+            
         }
         // bottom right
         if(this.checkBounds(in.getRow()+1, in.getCol()+1)) {
-            temp = board[in.getRow()+1][in.getCol()+1];
-            if(temp.getType() != 1 && temp.getType() != 5) {
-                temp.setParent(in);
-                update(temp, 1);
-            }
+        	if(!this.checkGoal(in)) {
+        		temp = board[in.getRow()+1][in.getCol()+1];
+                if(temp.getType() != 1 && temp.getType() != 5) {
+                    temp.setParent(in);
+                    update(temp, 1);
+                }
+        	} else {
+        		victory = true;
+        		return;
+        	}
+            
         }
     }
     
@@ -280,6 +327,12 @@ public class AStar {
         }
     }
     
+    /**
+     * Updates the variables for a node
+     * 
+     * @param in the node being updated
+     * @param type the type (hori/verti vs diag)
+     */
     public void update(Node in, int type) {
     	int g, h;
     	// calculate the G value and set node
@@ -291,11 +344,14 @@ public class AStar {
         // set F
         in.setF();
         // add to open list
-        openList.add(in);
+        if(!closedList.contains(in)) {
+        	openList.add(in);
+        }
     }
     
     /**
      * Used to check queue contents
+     * debug method
      */
     public void queueToString() {
         Node[] arr1 = new Node[openList.size()];
