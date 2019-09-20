@@ -100,13 +100,15 @@ public class AStar {
         for(int i = 0; i < 15; i++) {
             for(int j = 0; j < 15; j++) {
                 if(this.getNode(i, j).getType() == 1) {
-                    System.out.print("[%]");
+                    System.out.print("{X}");
                 } else if(this.getNode(i, j).getType() == 2) {
                     System.out.print("[S]");
                 } else if(this.getNode(i, j).getType() == 3) {
                     System.out.print("[G]");
                 } else if(this.getNode(i, j).getType() == 4) {
                     System.out.print("[" + p + "]");
+                } else if(this.getNode(i, j).getType() == 5) {
+                	System.out.print("[*]");
                 } else {
                 	System.out.print("[ ]");
                 }
@@ -123,25 +125,25 @@ public class AStar {
     	System.out.println("\nLegend: \n"
     	        + "Start Node:\tS\n"
     	        + "Goal Node:\tG\n"
-    	        + "Blocked Node:\t%\n"
-    	        + "Visited Node:\t" + p);
+    	        + "Blocked Node:\tX\n"
+    	        + "Path Node:\t" + p +"\n"
+    	        + "Visited Node:\t*");
     }
     
     /**
      * Searches the row and col of this node
-     * 
      */
     public void search() {
         // pop off top of queue (minheap) and search
         Node temp;
         if(openList.peek() != null) {
             temp = openList.poll();
-            closedList.add(temp);
+            closedList.add(temp); // add to closedList to prevent redunancy
         } else {
-            return;
+            return; // break if goal node cannot be determined
         }
         if(temp.getType() != 2 && temp.getType() != 3) {
-            temp.setType(4);
+            temp.setType(5); // set all popped nodes to type 5; visited node
         }
         //System.out.println("POPPED: " + temp.toString()); // debug msg
         // determine if current node is the goal
@@ -152,6 +154,7 @@ public class AStar {
             this.search();
         } else {
             victory = true;
+            backtrack(temp);
         }
     }
     
@@ -163,7 +166,7 @@ public class AStar {
     public void searchRow(Node in) {
         Node temp; // point to node for less verbosity
         if(this.checkBounds(in.getRow()-1, in.getCol())) {
-        	if(!this.checkGoal(in)) {
+        	if(!this.checkGoal(in)) { // check if goal prior to updating
         		temp = board[in.getRow()-1][in.getCol()];
                 if(temp.getType() != 1 && temp.getType() != 5) {
                     temp.setParent(in);
@@ -171,7 +174,7 @@ public class AStar {
                 }
         	} else {
         		victory = true;
-        		return;
+        		return; // break if goal found
         	}
         }
         if(this.checkBounds(in.getRow()+1, in.getCol())) {
@@ -388,6 +391,21 @@ public class AStar {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * Gets the final node and traces the parents back to the start node
+     * Sets the type of all traced nodes to 4 (path node)
+     * 
+     * @param in the node being traced to start node
+     */
+    public void backtrack(Node in) {
+    	Node temp;
+    	if(in.getParent().getType() != 2 && in.getParent().getType() != 3) {
+    		temp = in.getParent();
+        	temp.setType(4); // set type to 4; path node
+        	this.backtrack(temp);
+    	}
     }
     
     /**
