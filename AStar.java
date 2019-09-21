@@ -6,7 +6,7 @@ import java.util.*;
  * and goal node.
  * 
  * @author Mardi
- * @version 9/17/2019
+ * @version 9/21/2019
  */
 public class AStar {
     final int move = 10;
@@ -295,11 +295,11 @@ public class AStar {
      * @return int distance (in blocks) between param node and goal node
      */
     public int calculateH(Node in, int type) {
-        int x = in.getCol() - goal.getCol();
-        x = Math.abs(x); // get absolute value of col distance
-    
-        int y = in.getRow() - goal.getRow();
-        y = Math.abs(y); // get absolute value of row distance
+    	// get absolute value of col distance
+        int x = Math.abs(in.getCol() - goal.getCol());
+
+        // get absolute value of row distance
+        int y = Math.abs(in.getRow() - goal.getRow());
         
         if(type == 0) { // type 0 is 10, type 1 is 14
             return ((x + y) * move); // return the sum of the values * move
@@ -315,12 +315,8 @@ public class AStar {
      * @return int distance (in blocks) between param node and start node
      */
     public int calculateG(Node in, int type) {
-        int x = in.getCol() - start.getCol();
-        x = Math.abs(x);
-        
-        int y = in.getRow() - start.getRow();
-        y = Math.abs(y);
-        
+        int x = Math.abs(in.getCol() - start.getCol());
+        int y = Math.abs(in.getRow() - start.getRow());
         if(type == 0) {
             return ((x + y) * move);
         } else {
