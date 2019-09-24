@@ -47,6 +47,33 @@ public class AStar {
     }
     
     /**
+     * Initializes the starting text
+     * 
+     * @return int[] values that are required for a new AStar object
+     */
+    public int[] init() {
+    	int[] arr = new int[4];
+    	
+    	System.out.println("Welcome!\n\n"
+    			+ "This is a simple project that involves the usage of the A* algorithm.\n"
+    			+ "The program will display a 15x15 node board with about 10% of them being\n"
+    			+ "non-traversable. You will select a starting node and a goal node for the\n"
+    			+ "program and it will determine a path using the algorithm.\n\n"
+    			+ "Please be sure to only enter numbers between 0 and 14!\n\n");
+    	
+    	System.out.println("Enter the row for your starting node: ");
+        arr[0] = this.getInt();
+        System.out.println("Enter the col for your starting node: ");
+        arr[1] = this.getInt();
+        System.out.println("Enter the row for your goal node: ");
+        arr[2] = this.getInt();
+        System.out.println("Enter the col for your goal node: ");
+        arr[3] = this.getInt();
+        
+        return arr;
+    }
+    
+    /**
      * Generates a double array of Nodes
      */
     public void generateBoard() {
@@ -86,10 +113,10 @@ public class AStar {
 		
         // start node(0, 0) and goal node(14, 14); fail check
         /*
-        board[13][14].setType(1); blocks the goal node at(14, 14)
+        board[13][14].setType(1); // blocks the goal node at(14, 14)
         board[14][13].setType(1);
         board[13][13].setType(1);
-        */      
+        */
     }
     
     /**
@@ -448,22 +475,26 @@ public class AStar {
     }
     
     /**
-     * Initializes the starting text
+     * Used to determine the integers used for initializing the object
      * 
-     * @return int[] values that are required for a new AStar object
+     * @return int user-defined values for the start and goal nodes
      */
-    public int[] init() {
-    	int[] arr = new int[4];
+    public int getInt() {
+    	input = new Scanner(System.in);
+    	int out = 0;
+    	boolean escape = false;
     	
-    	System.out.println("Enter the row for your starting node: ");
-        arr[0] = input.nextInt();
-        System.out.println("Enter the col for your starting node: ");
-        arr[1] = input.nextInt();
-        System.out.println("Enter the row for your goal node: ");
-        arr[2] = input.nextInt();
-        System.out.println("Enter the col for your goal node: ");
-        arr[3] = input.nextInt();
-        
-        return arr;
+    	while(!escape) {
+    		try {
+    			String in = input.nextLine();
+    			out = Integer.parseInt(in);
+    			escape = true;
+    		} catch (Exception i) {
+    			System.out.println("ERROR! Enter an integer between 0 and 14!");
+    		}
+    	}
+    	return out;
     }
+    
+    
 }
