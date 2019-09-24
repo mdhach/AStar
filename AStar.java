@@ -60,7 +60,7 @@ public class AStar {
         
         // initialize values for starting node
         start.setG(0); // set start G value to 0
-        start.setH(calculateH(start, 0)); // set start h value
+        start.setH(calculateH(start)); // set start h value
         start.setF(); // set start F value
         
         openList.add(start);
@@ -294,34 +294,32 @@ public class AStar {
      * @param in the node that is being calculated
      * @return int distance (in blocks) between param node and goal node
      */
-    public int calculateH(Node in, int type) {
+    public int calculateH(Node in) {
     	// get absolute value of col distance
         int x = Math.abs(in.getCol() - goal.getCol());
 
         // get absolute value of row distance
         int y = Math.abs(in.getRow() - goal.getRow());
         
-        if(type == 0) { // type 0 is 10, type 1 is 14
-            return ((x + y) * move); // return the sum of the values * move
-        } else {
-            return ((x + y) * moveDia);
-        }
+        return ((x + y) * move); // return the sum of the values * move
+        
     }
     
     /**
      * Calculates the G value between a specified node and the start node
      * 
      * @param in the node that is being calculated
+     * @param type determines if movement is hv(0) or diagonal(1)
      * @return int distance (in blocks) between param node and start node
      */
     public int calculateG(Node in, int type) {
-        int x = Math.abs(in.getCol() - start.getCol());
-        int y = Math.abs(in.getRow() - start.getRow());
+        int g;
         if(type == 0) {
-            return ((x + y) * move);
+        	g = in.getParent().getG() + move;
         } else {
-            return ((x + y) * moveDia);
+        	g = in.getParent().getG() + moveDia;
         }
+        return g;
     }
     
     /**
@@ -336,7 +334,7 @@ public class AStar {
     	g = calculateG(in, type);
         in.setG(g);
         // calculate the H value and set node
-        h = calculateH(in, type);
+        h = calculateH(in);
         in.setH(h);
         // set F
         in.setF();
