@@ -6,7 +6,7 @@ import java.util.*;
  * and goal node.
  * 
  * @author Mardi
- * @version 9/21/2019
+ * @version 9/24/2019
  */
 public class AStar {
     final int move = 10;
