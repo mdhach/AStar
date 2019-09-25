@@ -123,7 +123,7 @@ public class AStar {
      * Prints a string representation of the board
      */
     public void printState() {
-        String p = "\u2022";
+        //String p = "\u2022";
         for(int i = 0; i < 15; i++) {
             for(int j = 0; j < 15; j++) {
                 if(this.getNode(i, j).getType() == 1) {
@@ -133,9 +133,9 @@ public class AStar {
                 } else if(this.getNode(i, j).getType() == 3) {
                     System.out.print("[G]");
                 } else if(this.getNode(i, j).getType() == 4) {
-                    System.out.print("[" + p + "]");
+                    System.out.print("[*]");
                 } else if(this.getNode(i, j).getType() == 5) {
-                	System.out.print("[*]");
+                	System.out.print("[~]");
                 } else {
                 	System.out.print("[ ]");
                 }
@@ -148,13 +148,13 @@ public class AStar {
      * Used to print the legend for the board
      */
     public void printLegend() {
-    	String p = "\u2022";
+    	//String p = "\u2022";
     	System.out.println("\nLegend: \n"
     	        + "Start Node:\tS\n"
     	        + "Goal Node:\tG\n"
     	        + "Blocked Node:\tX\n"
-    	        + "Path Node:\t" + p +"\n"
-    	        + "Visited Node:\t*");
+    	        + "Path Node:\t*\n"
+    	        + "Visited Node:\t~");
     }
     
     /**
